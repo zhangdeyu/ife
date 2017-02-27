@@ -3,9 +3,46 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
+    <script type="text/javascript" src="js/three.js"></script>
 </head>
-<body>
-    
+<body onload="init()">
+    <canvas id="mainCanvas" width="800px" height="600px"></canvas>
 </body>
-<script></script>
+<script>
+    // 一个典型的Three.js程序至少要包括渲染器（Renderer）、场景（Scene）、照相机（Camera），以及你在场景中创建的物体。
+    function init() {
+        var renderer = new THREE.WebGLRenderer({
+            canvas: document.querySelector('#mainCanvas')
+        });
+
+        renderer.setClearColor('#666666');
+
+        var scene = new THREE.Scene();
+
+        // 正交投影 left right top bottom near far
+        // (right - left)与(top - bottom)的比例与Canvas宽度与高度的比例一致
+        var camera = new THREE.OrthographicCamera(-2, 2, 1.5, -1.5, 1, 10);
+        // set(x, y, z)
+        camera.position.set(4, -3, 5);
+
+        // 照相机需要被添加到场景中
+        scene.add(camera);
+
+        var cube = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 2),
+                new THREE.MeshBasicMaterial({
+                    color: '#cccccc',
+                    wireframe: true
+                })
+        );
+
+        var torus = new THREE.TorusGeometry(1)
+        scene.add(cube);
+        scene.add(torus);
+
+        camera.lookAt(new THREE.Vector3(0, 0, 0));
+
+        // 渲染
+        renderer.render(scene, camera);
+    }
+</script>
 </html>
